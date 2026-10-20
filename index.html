@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>EMT-P 最終筆試（ACLS 專項）視覺化戰術複習系統｜108–114 歷屆深度解析</title>
+  <!-- Tailwind CSS 本地離線引擎 (100% 免連網) -->
+  <script src="tailwind.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            med: {
+              bg: '#060b14',
+              panel: '#0d1526',
+              card: '#131e33',
+              border: '#1e2f4d',
+              cyan: '#06b6d4',
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              rose: '#f43f5e',
+              purple: '#a855f7'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #060b14;
+      color: #e2e8f0;
+      font-family: 'Noto Sans TC', sans-serif;
+      background-image: 
+        radial-gradient(circle at 12% 8%, rgba(6, 182, 212, 0.08), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(16, 185, 129, 0.07), transparent 28%),
+        linear-gradient(to bottom, #060b14, #09101f);
+      min-height: 100vh;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #09101f;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e2f4d;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334e7b;
+    }
+    /* ECG Grid Subtle Pattern */
+    .ecg-frame {
+      background-color: #ffffff;
+      background-image: 
+        linear-gradient(rgba(244, 63, 94, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(244, 63, 94, 0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    /* Pulse animation for monitor icon */
+    @keyframes ecg-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.12); opacity: 0.8; }
+    }
+    .animate-ecg {
+      animation: ecg-pulse 2s infinite ease-in-out;
+    }
+    /* Highlight trigger badge in stem */
+    mark.trigger-mark {
+      background: rgba(6, 182, 212, 0.22);
+      color: #67e8f9;
+      border-bottom: 2px solid #06b6d4;
+      padding: 0 4px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    button, label, select, input, textarea {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* 心電圖燈箱支援雙指縮放與平移 */
+    .pinch-zoom-container {
+      touch-action: pan-x pan-y pinch-zoom;
+      -webkit-overflow-scrolling: touch;
+    }
+    @media (max-width: 1023px) {
+      body {
+        padding-bottom: 76px;
+      }
+    }
+  </style>
+</head>
+<body class="selection:bg-cyan-500/30 selection:text-cyan-200 antialiased">
+
+  <!-- ==================== 頂部導覽列 (Top Navbar) ==================== -->
+  <header class="sticky top-0 z-30 border-b border-slate-800/80 bg-[#070d19]/90 backdrop-blur-md">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Title -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-500/40 flex items-center justify-center shadow-lg shadow-cyan-950/50">
+          <svg class="w-6 h-6 text-cyan-400 animate-ecg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h4l2.5-6 4 12 2.5-6H21" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-black tracking-wide text-white">
+              EMT-P 最終筆試 <span class="text-cyan-400">ACLS 專項視覺化戰情室</span>
+            </h1>
+            <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              TSEM 108–114 (104題)
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 hidden sm:block">
+            AHA 2020/2025 指引對照 ‧ 演算法決策路徑定位 ‧ 23 張真實心電圖與 EtCO2 圖譜高畫質判讀
+          </p>
+        </div>
+      </div>
+
+      <!-- Global Stats & Actions -->
+      <div class="flex items-center flex-wrap gap-2 sm:gap-3">
+        <!-- Overall Progress Pill -->
+        <div class="hidden xl:flex items-center gap-4 bg-slate-900/90 border border-slate-800 px-3.5 py-1.5 rounded-xl text-xs">
+          <div>
+            <span class="text-slate-400">總進度：</span>
+            <span id="nav-answered-count" class="font-mono font-bold text-white">0 / 104</span>
+          </div>
+          <div class="h-3.5 w-[1px] bg-slate-800"></div>
+          <div>
+            <span class="text-slate-400">總正確率：</span>
+            <span id="nav-accuracy-rate" class="font-mono font-bold text-emerald-400">--%</span>
+          </div>
+          <div class="h-3.5 w-[1px] bg-slate-800"></div>
+          <div>
+            <span class="text-slate-400">待加強：</span>
+            <span id="nav-star-count" class="font-mono font-bold text-amber-400">0</span>
+          </div>
+        </div>
+
+        <!-- ⚡ 易混淆速查表按鈕 (Cheat Sheet Modal Trigger) -->
+        <button onclick="openCheatSheetModal()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 shadow-lg shadow-amber-500/20 transition transform active:scale-95">
+          <span>⚡</span>
+          <span>易混淆速查表</span>
+          <span class="hidden sm:inline text-[11px] font-mono bg-slate-950/20 px-1.5 py-0.5 rounded">5大必考表</span>
+        </button>
+
+        <!-- 題號矩陣總覽按鈕 -->
+        <button onclick="openQuestionMatrixModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl font-semibold text-xs sm:text-sm bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <span>題號總覽</span>
+        </button>
+
+        <!-- 進度備份/重置選單按鈕 -->
+        <div class="relative">
+          <button onclick="toggleDataMenu()" class="flex items-center gap-1 px-2.5 py-2 rounded-xl text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition" title="學習進度匯出/匯入與重置">
+            <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            <span class="hidden sm:inline">進度管理</span>
+          </button>
+          <!-- Dropdown -->
+          <div id="data-menu-dropdown" class="hidden absolute right-0 mt-2 w-52 rounded-xl bg-slate-900 border border-slate-700 shadow-2xl py-1.5 z-50 text-xs">
+            <button onclick="exportProgressJSON()" class="w-full px-4 py-2 text-left text-slate-200 hover:bg-slate-800 flex items-center gap-2">
+              <span>📥</span> <span>匯出學習進度 (.json)</span>
+            </button>
+            <label class="w-full px-4 py-2 text-left text-slate-200 hover:bg-slate-800 flex items-center gap-2 cursor-pointer">
+              <span>📤</span> <span>匯入學習進度 (.json)</span>
+              <input type="file" id="import-json-input" accept=".json" class="hidden" onchange="importProgressJSON(event)" />
+            </label>
+            <div class="my-1 border-t border-slate-800"></div>
+            <button onclick="resetAllProgress()" class="w-full px-4 py-2 text-left text-rose-400 hover:bg-rose-950/40 flex items-center gap-2 font-semibold">
+              <span>🗑️</span> <span>重置所有刷題紀錄</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 主內容容器 (Main Container) ==================== -->
+  <main class="max-w-[1600px] mx-auto px-4 sm:px-6 py-4 space-y-4">
+
+    <!-- ==================== 1. 頂部「弱點雷達與多維度過濾器」 ==================== -->
+    <section class="bg-[#0b1323]/90 border border-slate-800/90 rounded-2xl p-4 shadow-xl space-y-4">
+      <!-- 區塊標題與折疊開關 -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-5 rounded-full bg-cyan-400"></span>
+          <h2 class="text-sm font-bold text-slate-200 tracking-wide">六大核心領域弱點雷達（點擊卡片可快速篩選該分類）</h2>
+          <span class="text-xs text-slate-400 hidden md:inline">— 答對率低於 70% 將自動亮起紅/橘色弱點警示</span>
+        </div>
+        <button onclick="toggleRadarCollapse()" id="radar-collapse-btn" class="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+          <span id="radar-collapse-text">收合雷達</span>
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- 六大分類進度卡片網格 -->
+      <div id="category-radar-grid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2.5">
+        <!-- 由 JS 動態渲染 6 張卡片 -->
+      </div>
+
+      <!-- 多維度快速篩選器列 -->
+      <div class="pt-2 border-t border-slate-800/80 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <!-- 左側：狀態與特殊題型篩選 Pills -->
+        <div class="flex flex-wrap items-center gap-1.5" id="status-filter-bar">
+          <button onclick="setFilterMode('all')" data-mode="all" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-bold transition">
+            全部 (<span id="count-all">104</span>)
+          </button>
+          <button onclick="setFilterMode('unanswered')" data-mode="unanswered" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-bold transition">
+            未作答 (<span id="count-unanswered">104</span>)
+          </button>
+          <button onclick="setFilterMode('wrong')" data-mode="wrong" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-bold transition">
+            ❌ 答錯題庫 (<span id="count-wrong">0</span>)
+          </button>
+          <button onclick="setFilterMode('starred')" data-mode="starred" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-bold transition">
+            ⭐ 觀念模糊 (<span id="count-starred">0</span>)
+          </button>
+          <div class="h-4 w-[1px] bg-slate-800 mx-1 hidden sm:block"></div>
+          <button onclick="setFilterMode('ecg')" data-mode="ecg" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-bold transition">
+            📈 心電圖/圖譜題 (<span id="count-ecg">23</span>)
+          </button>
+          <button onclick="setFilterMode('disputed')" data-mode="disputed" class="filter-pill px-3 py-1.5 rounded-lg text-xs font-bold transition">
+            ⚖️ 歷年爭議題 (<span id="count-disputed">9</span>)
+          </button>
+        </div>
+
+        <!-- 右側：年度切換與關鍵字搜尋框 -->
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2">
+          <!-- 年度下拉或按鈕組 -->
+          <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-xl p-1 text-xs">
+            <span class="px-2 text-slate-400 font-medium">年度：</span>
+            <select id="year-select" onchange="setYearFilter(this.value)" class="bg-transparent text-white font-mono font-bold focus:outline-none pr-2 cursor-pointer">
+              <option value="all" class="bg-slate-900">全部年度 (108-114)</option>
+              <option value="114" class="bg-slate-900">114 年度 (20題)</option>
+              <option value="113" class="bg-slate-900">113 年度 (14題)</option>
+              <option value="112" class="bg-slate-900">112 年度 (13題)</option>
+              <option value="111" class="bg-slate-900">111 年度 (12題)</option>
+              <option value="110" class="bg-slate-900">110 年度 (15題)</option>
+              <option value="109" class="bg-slate-900">109 年度 (16題)</option>
+              <option value="108" class="bg-slate-900">108 年度 (14題)</option>
+            </select>
+          </div>
+
+          <!-- 關鍵字即時搜尋框 -->
+          <div class="relative flex-1 sm:w-64">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              id="search-input"
+              oninput="handleSearchInput(this.value)"
+              placeholder="搜尋藥名、Sgarbossa、氣胸、題號..."
+              class="w-full bg-slate-900/95 border border-slate-700/80 focus:border-cyan-500 rounded-xl pl-9 pr-8 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none transition"
+            />
+            <button id="clear-search-btn" onclick="clearSearchInput()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs">
+              ✕
+            </button>
+          </div>
+
+          <!-- 重置篩選按鈕 -->
+          <button onclick="resetFilters()" id="reset-filter-btn" class="hidden px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25 transition whitespace-nowrap">
+            清除篩選
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 無符合題目時之空狀態 (Empty Filter State) ==================== -->
+    <div id="empty-state-box" class="hidden bg-[#0b1323] border border-slate-800 rounded-2xl p-12 text-center space-y-3">
+      <div class="text-4xl">🔍</div>
+      <h3 class="text-lg font-bold text-white">目前篩選條件下沒有符合的試題</h3>
+      <p class="text-xs text-slate-400 max-w-md mx-auto">
+        可能是您尚未在該分類累積錯題、尚未標記星號，或關鍵字無匹配結果。
+      </p>
+      <button onclick="resetFilters()" class="mt-2 px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950 hover:bg-cyan-400 transition">
+        返回全部 104 題
+      </button>
+    </div>
+
+    <!-- ==================== 雙欄主工作區 (2. 左欄刷題區 + 3. 右欄演算法與深度解析區) ==================== -->
+    <div id="main-workspace" class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+      <!-- ==================== 2. 左欄：沉浸式刷題與看圖判讀區 (7 cols on lg) ==================== -->
+      <section class="lg:col-span-7 bg-[#0b1323]/95 border border-slate-800/90 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        <!-- 題頭狀態列 (Question Header Bar) -->
+        <div class="px-5 py-3.5 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center flex-wrap gap-2">
+            <!-- 題號序號與 ID -->
+            <span id="q-index-badge" class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">
+              #1 / 104
+            </span>
+            <span id="q-id-badge" class="text-sm font-mono font-black px-3 py-1 rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/40">
+              114-3
+            </span>
+            <!-- 分類標籤 -->
+            <span id="q-category-badge" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+              心搏停止
+            </span>
+            <!-- 歷年爭議題徽章 (作答前不暴雷內容) -->
+            <span id="q-disputed-badge" class="hidden text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1">
+              <span>⚖️</span> <span>歷年送分/多解爭議題</span>
+            </span>
+            <!-- 圖片題徽章 -->
+            <span id="q-ecg-badge" class="hidden text-xs font-bold px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-300 border border-rose-500/30">
+              📈 附心電圖/圖譜
+            </span>
+          </div>
+
+          <!-- 右上功能：破題線索開關 + 星號收藏 -->
+          <div class="flex items-center gap-2">
+            <!-- 破題線索開關 (Show Triggers Hint) -->
+            <button
+              id="btn-toggle-triggers"
+              onclick="toggleTriggerHints()"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition"
+              title="高亮題幹中的破題關鍵字 (Key Triggers)"
+            >
+              <span>💡</span>
+              <span id="trigger-btn-text">破題線索</span>
+            </button>
+
+            <!-- ⭐ 標記觀念模糊按鈕 -->
+            <button
+              id="btn-toggle-star"
+              onclick="toggleStarCurrent()"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition"
+              title="標記為觀念模糊（快捷鍵 S）"
+            >
+              <span id="star-icon">☆</span>
+              <span id="star-text">標記待加強</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 題幹與破題關鍵字浮現區 -->
+        <div class="p-5 sm:p-6 space-y-4">
+          <!-- 破題關鍵字膠囊列 (當開啟破題線索時顯示) -->
+          <div id="trigger-pills-box" class="hidden bg-cyan-950/30 border border-cyan-500/30 rounded-xl p-3 space-y-1.5">
+            <div class="text-[11px] font-bold text-cyan-300 flex items-center gap-1.5">
+              <span>🎯 本題破題關鍵字 (Key Triggers)：</span>
+            </div>
+            <div id="trigger-pills-list" class="flex flex-wrap gap-1.5"></div>
+          </div>
+
+          <!-- 題幹文字 -->
+          <div id="q-stem-text" class="text-base sm:text-lg font-semibold text-slate-100 leading-relaxed tracking-wide select-text">
+            載入題目中...
+          </div>
+
+          <!-- 心電圖 / 生理圖譜高畫質檢視器 (當有 image 欄位時顯示) -->
+          <div id="q-image-container" class="hidden space-y-2">
+            <div class="flex items-center justify-between text-xs text-slate-400">
+              <span class="flex items-center gap-1.5 font-medium text-cyan-300">
+                <span>🔍</span> <span>真實考卷心電圖 / 生理波形圖（點擊圖片可全螢幕放大檢視細節）</span>
+              </span>
+              <button onclick="openLightbox()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition">
+                ⛶ 全螢幕放大
+              </button>
+            </div>
+            <div
+              onclick="openLightbox()"
+              class="ecg-frame rounded-xl p-2 sm:p-3 border-2 border-slate-700 hover:border-cyan-400 transition cursor-zoom-in shadow-inner overflow-hidden group relative"
+            >
+              <img
+                id="q-ecg-image"
+                src=""
+                alt="考題心電圖或生理圖譜"
+                class="max-h-[380px] w-auto mx-auto object-contain rounded transition duration-200 group-hover:scale-[1.01]"
+              />
+              <div class="absolute bottom-3 right-3 bg-slate-950/80 text-cyan-300 text-[11px] font-bold px-2.5 py-1 rounded-lg border border-cyan-500/30 opacity-0 group-hover:opacity-100 transition pointer-events-none">
+                點擊放大檢視 ST 段與節律
+              </div>
+            </div>
+          </div>
+
+          <!-- A / B / C / D 選項互動區 -->
+          <div id="q-options-list" class="space-y-2.5 pt-2">
+            <!-- 由 JS 動態渲染選項按鈕 -->
+          </div>
+
+          <!-- 作答狀態結果橫幅 (作答後顯示) -->
+          <div id="q-result-banner" class="hidden rounded-xl p-3.5 border flex flex-wrap items-center justify-between gap-2">
+            <div id="q-result-text" class="text-sm font-bold flex items-center gap-2"></div>
+            <div class="flex items-center gap-2">
+              <button onclick="clearCurrentAnswer()" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                🔄 重新作答本題
+              </button>
+            </div>
+          </div>
+
+          <!-- 個人戰術筆記區 (LocalStorage 自動儲存) -->
+          <div class="pt-3 border-t border-slate-800/80">
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="q-user-note" class="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+                <span>📝 個人記憶口訣 / 錯題筆記（自動儲存於本機）：</span>
+              </label>
+              <span id="note-save-indicator" class="text-[11px] text-emerald-400 opacity-0 transition">✓ 已自動儲存</span>
+            </div>
+            <textarea
+              id="q-user-note"
+              rows="2"
+              oninput="handleNoteInput(this.value)"
+              placeholder="在此記錄本題的個人口訣或易錯提醒（例如：下壁 STEMI + 低血壓 → 右心室梗塞禁用 NTG）..."
+              class="w-full bg-slate-900/90 border border-slate-800 focus:border-cyan-500/70 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200 placeholder-slate-600 focus:outline-none transition resize-y"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- 底部上下題導覽與快捷鍵提示列 -->
+        <div class="px-5 py-3.5 bg-slate-900/90 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 mt-auto">
+          <button
+            onclick="prevQuestion()"
+            id="btn-prev-q"
+            class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition disabled:opacity-40 disabled:pointer-events-none"
+          >
+            <span>←</span> <span>上一題</span>
+          </button>
+
+          <div class="hidden sm:flex items-center gap-2 text-[11px] text-slate-400 font-mono">
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">1~4 / A~D</span> 作答
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">← / →</span> 換題
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">S</span> 星號
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">H</span> 線索
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              onclick="revealAnalysisManually()"
+              id="btn-reveal-analysis"
+              class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 transition"
+            >
+              👁️ 直接看解析
+            </button>
+            <button
+              onclick="nextQuestion()"
+              id="btn-next-q"
+              class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-md shadow-cyan-500/15 transition disabled:opacity-40 disabled:pointer-events-none"
+            >
+              <span>下一題</span> <span>→</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 3. 右欄：視覺化演算法定位 ＆ 防混淆深度解析面板 (5 cols on lg) ==================== -->
+      <aside class="lg:col-span-5 space-y-4">
+        <!-- 未作答前的遮罩提示卡 (Locked Analysis State) -->
+        <div id="analysis-locked-card" class="bg-[#0b1323]/95 border border-slate-800/90 rounded-2xl p-8 text-center space-y-4 shadow-2xl">
+          <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mx-auto text-2xl">
+            🧠
+          </div>
+          <div class="space-y-1.5">
+            <h3 class="text-base font-bold text-white">視覺化演算法定位 ＆ 深度解析待命</h3>
+            <p class="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">
+              請先於左側選擇 <span class="text-cyan-300 font-mono font-bold">A / B / C / D</span> 作答（或點擊「👁️ 直接看解析」），系統將立即展開：
+            </p>
+          </div>
+          <div class="grid grid-cols-1 gap-2 text-left max-w-xs mx-auto text-xs text-slate-300">
+            <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-emerald-400 font-bold">①</span>
+              <span>ACLS 演算法決策路徑節點圖</span>
+            </div>
+            <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-amber-400 font-bold">②</span>
+              <span>易混淆誘答陷阱拆解（含爭議題剖析）</span>
+            </div>
+            <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-cyan-400 font-bold">③</span>
+              <span>2020/2025 AHA 最新指引對照檢核</span>
+            </div>
+          </div>
+          <button
+            onclick="revealAnalysisManually()"
+            class="px-5 py-2.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 transition"
+          >
+            👁️ 不作答直接展開深度解析
+          </button>
+        </div>
+
+        <!-- 解鎖後的三大深度解析面板 -->
+        <div id="analysis-unlocked-container" class="hidden space-y-4">
+
+          <!-- ① 演算法決策路徑圖 (Algorithm Flowchart) -->
+          <div class="bg-[#0b1323]/95 border border-emerald-500/30 rounded-2xl p-5 shadow-xl space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-300 text-xs font-black">
+                  1
+                </span>
+                <h3 class="text-sm font-black text-emerald-300 tracking-wide">
+                  ACLS 演算法決策路徑定位 (Algorithm Path)
+                </h3>
+              </div>
+              <span class="text-[11px] font-mono text-emerald-400/80 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/20">
+                Clinical Flow
+              </span>
+            </div>
+            <div id="algorithm-flowchart-box" class="pt-1 space-y-1">
+              <!-- 由 JS 渲染垂直進程節點與箭頭 -->
+            </div>
+          </div>
+
+          <!-- ② 易混淆陷阱拆解卡 (Confusion Trap Alert) -->
+          <div class="bg-[#0b1323]/95 border border-amber-500/40 rounded-2xl p-5 shadow-xl space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-300 text-xs font-black">
+                  2
+                </span>
+                <h3 class="text-sm font-black text-amber-300 tracking-wide">
+                  易混淆誘答陷阱拆解 (Confusion Trap Alert)
+                </h3>
+              </div>
+              <span class="text-[11px] font-mono text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-500/30">
+                High-Yield Trap
+              </span>
+            </div>
+
+            <!-- 若為歷年爭議題/送分題，顯示官方給分與申訴重點橫幅 -->
+            <div id="disputed-detail-alert" class="hidden rounded-xl bg-rose-950/50 border border-rose-500/50 p-3 text-xs space-y-1">
+              <div class="font-bold text-rose-300 flex items-center gap-1.5">
+                <span>⚖️ 台灣急診醫學會官方公告爭議題 / 送分題：</span>
+                <span id="disputed-official-ans" class="font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-200 border border-rose-400/40"></span>
+              </div>
+              <p class="text-rose-200/90 leading-relaxed">
+                本題於當年甄試後經考題申訴判定為「送分」或「多解給分」，下方已為您完整拆解原命題用意與申訴翻盤關鍵！
+              </p>
+            </div>
+
+            <!-- 條列式陷阱拆解內容 -->
+            <ul id="confusion-trap-list" class="space-y-2.5 text-xs sm:text-sm text-slate-200 leading-relaxed">
+              <!-- 由 JS 依據 \n• 拆分並自動強調藥名與數值 -->
+            </ul>
+          </div>
+
+          <!-- ③ 最新指引檢核卡 (AHA Guideline Check) -->
+          <div class="bg-[#0b1323]/95 border border-cyan-500/35 rounded-2xl p-5 shadow-xl space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 text-xs font-black">
+                  3
+                </span>
+                <h3 class="text-sm font-black text-cyan-300 tracking-wide">
+                  AHA 2020/2025 最新指引檢核 (Guideline Check)
+                </h3>
+              </div>
+              <span class="text-[11px] font-mono text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/30">
+                AHA Standard
+              </span>
+            </div>
+            <ul id="guideline-check-list" class="space-y-2.5 text-xs sm:text-sm text-slate-200 leading-relaxed">
+              <!-- 由 JS 依據 \n• 拆分渲染 -->
+            </ul>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- ==================== 全螢幕心電圖放大檢視器 (Lightbox Modal) ==================== -->
+  <div id="lightbox-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-4">
+    <div class="max-w-6xl w-full flex flex-wrap items-center justify-between gap-2 mb-3 px-2">
+      <div class="flex items-center gap-2">
+        <span id="lightbox-title" class="text-xs sm:text-sm font-mono font-bold text-cyan-300 bg-slate-900 px-3 py-1 rounded-lg border border-cyan-500/30">
+          114-55 心電圖檢視
+        </span>
+        <span class="text-xs text-emerald-300 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">
+          👌 支援雙指縮放或點擊倍率切換
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="toggleLightboxZoom()" id="btn-lightbox-zoom" class="px-3 py-1.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-500/40 text-xs font-bold transition">
+          🔍 切換 200% 放大
+        </button>
+        <button onclick="closeLightbox()" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition shadow-lg">
+          ✕ 關閉 (ESC)
+        </button>
+      </div>
+    </div>
+    <div id="lightbox-scroll-area" onclick="closeLightbox()" class="pinch-zoom-container w-full flex-1 flex items-center justify-center overflow-auto cursor-zoom-out">
+      <img
+        id="lightbox-img"
+        src=""
+        alt="放大心電圖"
+        onclick="event.stopPropagation(); toggleLightboxZoom();"
+        class="max-w-full max-h-[85vh] object-contain bg-white p-2 sm:p-3 rounded-2xl shadow-2xl border-2 border-cyan-500/40 cursor-zoom-in transition-all duration-200"
+      />
+    </div>
+  </div>
+
+  <!-- ==================== 題號矩陣總覽彈窗 (Question Matrix Modal) ==================== -->
+  <div id="matrix-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#0b1323] border border-slate-700 rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="px-5 py-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-black text-white">108–114 歷屆 ACLS 題號快速跳轉矩陣</h3>
+          <p class="text-xs text-slate-400">綠色＝答對｜紅色＝答錯｜琥珀框＝星號待加強｜點擊題號直接跳轉</p>
+        </div>
+        <button onclick="closeQuestionMatrixModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">
+          ✕ 關閉
+        </button>
+      </div>
+      <div id="matrix-grid-container" class="p-5 overflow-y-auto grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+        <!-- 由 JS 渲染所有符合當前篩選或全體 104 題按鈕 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4. ACLS 終極易混淆速查抽屜 (Quick Cheat Sheet Modal) ==================== -->
+  <div id="cheatsheet-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-[#0b1323] border border-amber-500/40 rounded-2xl max-w-6xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <!-- Modal Header -->
+      <div class="px-5 py-4 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-lg">
+            ⚡
+          </span>
+          <div>
+            <h2 class="text-base sm:text-lg font-black text-white">
+              EMT-P 筆試 ACLS 終極易混淆速查表（104 題濃縮精華）
+            </h2>
+            <p class="text-xs text-slate-400">
+              考前衝刺必背：同步整流焦耳數、12 導程解剖與右心室梗塞、5H5T 超音波與高血鉀、ROSC 目標與 EtCO2 圖譜、給藥途徑
+            </p>
+          </div>
+        </div>
+        <button onclick="closeCheatSheetModal()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-600 text-slate-200 hover:text-white text-xs font-bold transition">
+          ✕ 關閉速查表 (ESC)
+        </button>
+      </div>
+
+      <!-- Modal Tabs -->
+      <div class="px-5 pt-3 bg-slate-900/60 border-b border-slate-800 flex flex-wrap gap-1.5">
+        <button onclick="switchCheatTab(1)" id="cheat-tab-btn-1" class="cheat-tab-btn px-3.5 py-2 rounded-t-xl text-xs sm:text-sm font-bold transition">
+          ① 電擊焦耳與頻脈/緩脈處置
+        </button>
+        <button onclick="switchCheatTab(2)" id="cheat-tab-btn-2" class="cheat-tab-btn px-3.5 py-2 rounded-t-xl text-xs sm:text-sm font-bold transition">
+          ② 12導程解剖定位與ACS禁忌
+        </button>
+        <button onclick="switchCheatTab(3)" id="cheat-tab-btn-3" class="cheat-tab-btn px-3.5 py-2 rounded-t-xl text-xs sm:text-sm font-bold transition">
+          ③ 5H5T 臨床與超音波(POCUS)鑑別
+        </button>
+        <button onclick="switchCheatTab(4)" id="cheat-tab-btn-4" class="cheat-tab-btn px-3.5 py-2 rounded-t-xl text-xs sm:text-sm font-bold transition">
+          ④ ROSC 照護目標與 EtCO2 圖譜
+        </button>
+        <button onclick="switchCheatTab(5)" id="cheat-tab-btn-5" class="cheat-tab-btn px-3.5 py-2 rounded-t-xl text-xs sm:text-sm font-bold transition">
+          ⑤ 給藥途徑(IV/IO/ET/IM)與 ECPR
+        </button>
+      </div>
+
+      <!-- Modal Tab Contents -->
+      <div class="p-5 overflow-y-auto space-y-5 text-xs sm:text-sm leading-relaxed">
+
+        <!-- Tab 1: 電擊與頻脈/緩脈處置表 -->
+        <div id="cheat-tab-content-1" class="cheat-tab-pane space-y-4">
+          <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-3">
+            <h4 class="font-bold text-amber-300 text-sm flex items-center gap-2">
+              <span>⚡ 一、不穩定頻脈「同步整流 (Synchronized Cardioversion)」四大心律初始焦耳數與去顫對照</span>
+              <span class="text-[11px] font-mono text-slate-400">（對應考古題：113-25, 113-100, 110-25, 108-29）</span>
+            </h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-700 text-slate-300 bg-slate-800/60">
+                    <th class="p-2.5">心律類型 (QRS 寬窄 × 節律規則度)</th>
+                    <th class="p-2.5">電擊模式</th>
+                    <th class="p-2.5">初始建議焦耳數 (雙相波)</th>
+                    <th class="p-2.5">穩定時首選藥物與國考致命陷阱</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-200">
+                  <tr>
+                    <td class="p-2.5 font-bold text-cyan-300">窄且規則 (PSVT / 心房撲動 Atrial Flutter)</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">同步整流</span></td>
+                    <td class="p-2.5 font-mono font-bold text-amber-300">50 – 100 J</td>
+                    <td class="p-2.5">穩定先做迷走神經刺激 ➔ <b class="text-cyan-300">Adenosine 6 mg IVP</b>（無效給 12 mg）。<br><span class="text-rose-400">★ 氣喘/COPD 禁用 Adenosine，改給 Verapamil 或 Diltiazem（112-56）！</span></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-cyan-300">窄且不規則 (心房顫動 Atrial Fibrillation, Af)</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">同步整流</span></td>
+                    <td class="p-2.5 font-mono font-bold text-amber-300">120 – 200 J (雙相)<br><span class="text-xs text-slate-400">單相波 200 J</span></td>
+                    <td class="p-2.5">穩定時控制心室速率：Diltiazem 或 β-blocker。<br><span class="text-rose-400">★ 若合併 WPW 預激症候群：絕對禁用 ABCD（Adenosine, β-blocker, CCB, Digoxin），改用 Procainamide 或 Amiodarone（110-57, 109-64）！</span></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-cyan-300">寬且規則 (單形性 Monomorphic VT)</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">同步整流</span></td>
+                    <td class="p-2.5 font-mono font-bold text-amber-300">100 J</td>
+                    <td class="p-2.5">穩定時可給 <b class="text-cyan-300">Amiodarone 150 mg</b> IV drip 10 分鐘 或 Procainamide。<br><span class="text-emerald-300">★ 若穩定且規則寬波懷疑 SVT 伴差異傳導，可考慮給 Adenosine 鑑別（113-100, 108-29）。</span></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-rose-300">寬且不規則 (多形性 Polymorphic VT / TdP / VF)</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold">非同步去顫</span></td>
+                    <td class="p-2.5 font-mono font-bold text-rose-300">120 – 200 J (雙相)<br><span class="text-xs text-slate-400">單相波 360 J</span></td>
+                    <td class="p-2.5">因為 R 波高低振幅不斷改變，機器無法同步抓點！<br>若為 QT 延長之 <b class="text-amber-300">Torsades de Pointes (TdP)</b>：穩定給 <b class="text-cyan-300">MgSO4 1–2 g</b> IV（113-56, 108-37）；不穩定立即非同步去顫！</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+            <h4 class="font-bold text-cyan-300 text-sm">🐢 二、有症狀心搏過緩 (Symptomatic Bradycardia, HR &lt; 50 bpm) 演算法關鍵（113-100, 110-59）</h4>
+            <ul class="space-y-1.5 text-slate-200 list-disc pl-5">
+              <li><b class="text-amber-300">第一線首選藥物（2020/2025 更新）</b>：<b class="text-white">Atropine 1 mg IVP</b>（舊版為 0.5 mg，現已調升為 1 mg），每 3–5 分鐘可重複，最大總劑量 <b class="text-white">3 mg</b>。</li>
+              <li><b class="text-rose-300">二度二型 (Mobitz Type II) 與三度完全房室阻滯 (Complete AV Block) 陷阱</b>：病灶位於希氏束以下（Infranodal），Atropine 通常無效！切勿依賴 Atropine 而延誤 <b class="text-cyan-300">經皮心臟節律器 (TCP)</b> 或第二線升壓藥物（<b class="text-cyan-300">Epinephrine 2–10 mcg/min</b> 或 <b class="text-cyan-300">Dopamine 5–20 mcg/kg/min</b>）。</li>
+              <li><b class="text-emerald-300">TCP 操作三步驟（110-59）</b>：貼片貼妥 ➔ 開啟電源調設固定速率（約 60–70 bpm）➔ 調高毫安培（mA）直到每個節律脈衝訊號後都有寬 QRS 波（電氣捕捉 Electrical capture），再確認股動脈/右側橈動脈有實際脈搏（機械捕捉 Mechanical capture），清醒病人需給予鎮靜止痛！</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tab 2: 12 導程解剖定位與 ACS 禁忌表 -->
+        <div id="cheat-tab-content-2" class="cheat-tab-pane hidden space-y-4">
+          <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-3">
+            <h4 class="font-bold text-amber-300 text-sm">❤️ 一、12 導程心電圖解剖定位、冠狀動脈分支與特殊處置總表（114-55, 113-54, 112-57, 111-61, 108-26）</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-700 text-slate-300 bg-slate-800/60">
+                    <th class="p-2.5">心肌梗塞部位</th>
+                    <th class="p-2.5">ST 段上升導程 (Contiguous Leads)</th>
+                    <th class="p-2.5">鏡像壓低導程</th>
+                    <th class="p-2.5">主要阻塞血管與國考必考陷阱</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-200">
+                  <tr>
+                    <td class="p-2.5 font-bold text-cyan-300">中膈壁 (Septal) / 前壁 (Anterior)</td>
+                    <td class="p-2.5 font-mono font-bold text-amber-300">V1–V2 (中膈)<br>V3–V4 (前壁)</td>
+                    <td class="p-2.5 font-mono">II, III, aVF</td>
+                    <td class="p-2.5"><b class="text-white">左前降支 (LAD)</b>。若 V1–V4 出現雙相或深倒置對稱 T 波且無胸痛時，考慮 <b class="text-rose-300">Wellens Syndrome</b>（LAD 近端嚴重狹窄，113-55）。</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-cyan-300">廣泛前壁 (Extensive Anterior)</td>
+                    <td class="p-2.5 font-mono font-bold text-amber-300">V1–V6 + I, aVL</td>
+                    <td class="p-2.5 font-mono">II, III, aVF</td>
+                    <td class="p-2.5"><b class="text-white">左前降支近端 (Proximal LAD) 或左主幹 (LM)</b>，常合併急性左心衰竭肺水腫與心因性休克（111-61）。</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-cyan-300">側壁 (Lateral)</td>
+                    <td class="p-2.5 font-mono font-bold text-amber-300">I, aVL, V5, V6</td>
+                    <td class="p-2.5 font-mono">II, III, aVF</td>
+                    <td class="p-2.5"><b class="text-white">左迴旋支 (LCX)</b>。</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-rose-300">下壁 (Inferior) ± 右心室 (RV)</td>
+                    <td class="p-2.5 font-mono font-bold text-rose-300">II, III, aVF<br>（加做右胸 V4R）</td>
+                    <td class="p-2.5 font-mono">I, aVL</td>
+                    <td class="p-2.5"><b class="text-white">右冠狀動脈 (RCA, 80%)</b>（ST 上升 III &gt; II 且 I, aVL 壓低，109-60）。<br><span class="text-rose-400 font-bold">★ 約 40% 合併右心室梗塞（低血壓、頸靜脈怒張、肺音清晰）：絕對禁用 NTG 與 Morphine，應給予生理食鹽水輸液維持前負荷（114-55, 113-54）！</span></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-purple-300">正後壁 (Posterior)</td>
+                    <td class="p-2.5 font-mono font-bold text-purple-300">V7–V9 上升<br>(V1–V3 鏡像壓低 + 高 R 波)</td>
+                    <td class="p-2.5 font-mono">V1–V3 顯著 ST 壓低</td>
+                    <td class="p-2.5"><b class="text-white">RCA 後降支 (PDA) 或 LCX</b>（112-57：V1–V3 ST 壓低伴隨下壁/側壁變化）。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-cyan-300 text-sm">🔍 二、LBBB 合併 AMI：Sgarbossa Criteria（112-59, 108-36）</h4>
+              <ul class="space-y-1.5 text-slate-200 list-disc pl-5">
+                <li><b class="text-emerald-300">5 分（最具特異性）</b>：在 QRS 正向之導程出現 <b class="text-white">同向 (Concordant) ST 段上升 ≥ 1 mm</b>。</li>
+                <li><b class="text-amber-300">3 分</b>：在 <b class="text-white">V1、V2 或 V3</b> 出現 <b class="text-white">同向 (Concordant) ST 段壓低 ≥ 1 mm</b>。</li>
+                <li><b class="text-cyan-300">2 分</b>：在 QRS 負向之導程出現 <b class="text-white">反向 (Discordant) ST 段上升 ≥ 5 mm</b>（Modified Sgarbossa 為 ST/S 比值 ≤ -0.25）。總分 ≥ 3 分即可確診 STEMI！</li>
+              </ul>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-rose-300 text-sm">💊 三、ACS 給藥安全數字與心包膜炎鑑別（114-20, 114-24, 111-61）</h4>
+              <ul class="space-y-1.5 text-slate-200 list-disc pl-5">
+                <li><b class="text-white">Aspirin 嚼碎負荷劑量</b>：<b class="text-amber-300">160–325 mg</b>（溫克痛 100 mg × 3 顆 = 300 mg）。</li>
+                <li><b class="text-white">氧氣給予門檻</b>：僅在 <b class="text-amber-300">SpO2 &lt; 90%</b>（或部分縣市預立醫囑 &lt; 94%）或呼吸窘迫時給氧。</li>
+                <li><b class="text-white">NTG 絕對禁忌</b>：SBP &lt; 90 mmHg、HR &lt; 50 或 &gt; 100 bpm、右心室梗塞、24h 內服 Sildenafil(威而鋼) / 48h 內服 Tadalafil(犀利士)。</li>
+                <li><b class="text-white">急性心包膜炎</b>：平躺吸氣劇痛、<b class="text-emerald-300">坐起身體前傾緩解</b>，ECG 廣泛凹向上 ST 上升 + PR 段壓低。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: 5H5T 臨床與超音波 (POCUS) 鑑別表 -->
+        <div id="cheat-tab-content-3" class="cheat-tab-pane hidden space-y-4">
+          <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-3">
+            <h4 class="font-bold text-amber-300 text-sm">🩺 一、三大阻塞性休克 / PEA（張力性氣胸 vs 心包膜填塞 vs 肺栓塞）終極鑑別表</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-700 text-slate-300 bg-slate-800/60">
+                    <th class="p-2.5">5H5T 疾病</th>
+                    <th class="p-2.5">呼吸音與理學檢查特徵</th>
+                    <th class="p-2.5">重點式超音波 (POCUS) 與 ECG 特徵</th>
+                    <th class="p-2.5">急救處置與國考必考陷阱</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-200">
+                  <tr>
+                    <td class="p-2.5 font-bold text-cyan-300">張力性氣胸<br>(Tension PTX)</td>
+                    <td class="p-2.5">患側呼吸音減弱/消失、叩診鼓音、頸靜脈怒張、氣管偏向對側。<br><span class="text-amber-300">★ 針刺減壓三要件：一喘、二無音、三休克(SBP&lt;90)，不含意識不清或頸靜脈怒張(111-47, 113-37)！</span></td>
+                    <td class="p-2.5">胸腔超音波：肋膜滑動徵象消失 (Absent lung sliding)、Barcode sign。</td>
+                    <td class="p-2.5"><b class="text-amber-300">成人針刺減壓：患側第五肋間腋中線前側</b>；<b class="text-cyan-300">兒童：第二肋間鎖骨中線</b>（ATLS 10版，113-37）。<br><span class="text-rose-400">★ 插胸管後 5 分鐘再度喘、掉血壓 ➔ 永遠選「重新進行初級評估」（108-56, 109-41, 111-44）！</span></td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-rose-300">心包膜填塞<br>(Tamponade)</td>
+                    <td class="p-2.5"><b class="text-white">Beck's triad</b>：低血壓、頸靜脈怒張、<b class="text-amber-300">心音模糊遙遠</b>（雙側呼吸音清晰對稱，108-51, 109-54）。可見奇脈 (Pulsus paradoxus)。</td>
+                    <td class="p-2.5">心包膜腔積液 + <b class="text-rose-300">右心室舒張期塌陷 (RV diastolic collapse)</b> + IVC 脹大。<br>ECG：低電位 + 電氣交替 (Electrical alternans，110-39)。</td>
+                    <td class="p-2.5">緊急心包膜穿刺引流術 (Pericardiocentesis) 或開胸減壓，暫時輸液維持前負荷。</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 font-bold text-purple-300">急性肺栓塞<br>(Massive PE)</td>
+                    <td class="p-2.5">突發呼吸喘、低血氧、頸靜脈怒張、雙肺聽診清晰，常伴隨<b class="text-amber-300">單側下肢腫脹溫熱 (DVT，110-19)</b>。</td>
+                    <td class="p-2.5"><b class="text-purple-300">右心室擴大 (RV dilation, D-shape LV)</b>（勿與心包膜填塞之 RV 塌陷搞混，113-59）！<br>ECG：竇性頻脈最常見、典型 <b class="text-amber-300">S1Q3T3</b>（111-66, 108-74）。</td>
+                    <td class="p-2.5">抗凝血治療、全身性血栓溶解劑 (rt-PA) 或導管取栓（不需做冠狀動脈 PCI，111-66）。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-amber-300 text-sm">🧪 二、高血鉀 (Hyperkalemia) 與壓碎/腫瘤溶解症候群（114-56, 114-71, 113-44, 109-29, 108-62）</h4>
+              <ul class="space-y-1.5 text-slate-200 list-disc pl-5">
+                <li><b class="text-rose-300">壓碎症候群 &amp; TLS 電解質口訣「三高一低」</b>：<b class="text-white">高血鉀、高血磷、高尿酸 + 「低血鈣」</b>（磷酸根結合游離鈣沉澱）！脫困<b class="text-amber-300">前</b>即需大量輸注生理食鹽水（1000 mL/hr），並用 NaHCO3 <b class="text-cyan-300">鹼化尿液</b>。</li>
+                <li><b class="text-cyan-300">高血鉀 ECG 演進</b>：高尖帳篷狀 T 波 (Tall peaked T) ➔ P 波變平消失、PR 延長 ➔ QRS 變寬 ➔ 正弦波 (Sine wave) ➔ VF/Asystole。</li>
+                <li><b class="text-emerald-300">急救三步驟</b>：① <b class="text-white">Calcium chloride / gluconate</b>（穩定心肌膜，不降鉀）➔ ② <b class="text-white">Insulin + Glucose / NaHCO3 / β2 agonist</b>（鉀移入細胞內）➔ ③ <b class="text-white">Furosemide / 排鉀樹脂 / 血液透析</b>（排出體外）。</li>
+              </ul>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-cyan-300 text-sm">❄️ 三、重度低體溫 (&lt; 30°C) 復甦與 Osborn Wave（111-82, 110-70, 109-68, 109-69, 108-75）</h4>
+              <ul class="space-y-1.5 text-slate-200 list-disc pl-5">
+                <li><b class="text-amber-300">特徵心電圖</b>：QRS 末端與 ST 段交界處出現駝峰狀突起之 <b class="text-white">Osborn wave (J wave)</b>（109-68）。動作務必輕柔，避免誘發 VF！</li>
+                <li><b class="text-rose-300">電擊與藥物限制 (&lt; 30°C)</b>：若發生 VF/VT 可先電擊 <b class="text-white">1 次</b>，若無效應專注於 CPR 與積極中心回溫，待體溫 <b class="text-white">≥ 30°C</b> 後再繼續電擊與給予 ACLS 藥物（30–35°C 給藥間隔加倍為 6–10 分鐘）。</li>
+                <li><b class="text-emerald-300">台灣教材考古題陷阱</b>：108-75、109-69、111-82 均考出「低體溫患者脈搏微弱不易評估，應評估脈搏 <b class="text-white">30–45 秒</b>」；未回溫前不可輕易宣告死亡（除非身體完全結凍冰封無法壓胸，110-70）。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: ROSC 復甦後照護目標與 EtCO2 圖譜表 -->
+        <div id="cheat-tab-content-4" class="cheat-tab-pane hidden space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-emerald-300 text-sm">🎯 一、ROSC 復甦後照護五大黃金生理目標（114-34, 114-35, 113-24, 111-66）</h4>
+              <ul class="space-y-2 text-slate-200 list-disc pl-5">
+                <li><b class="text-cyan-300">血氧飽和度 (SpO2)</b>：維持 <b class="text-white">92% – 98%</b>（避免低血氧與高血氧自由基傷害）。</li>
+                <li><b class="text-cyan-300">二氧化碳分壓 (PaCO2 / EtCO2)</b>：維持正常碳酸血症 <b class="text-white">PaCO2 35–45 mmHg (EtCO2 30–40 mmHg)</b>，插管後每 6 秒通氣 1 次（10 次/分），<b class="text-rose-400">嚴禁過度換氣（111-55）</b>！</li>
+                <li><b class="text-cyan-300">血壓目標 (Blood Pressure)</b>：維持收縮壓 <b class="text-white">SBP ≥ 90 mmHg</b> 且平均動脈壓 <b class="text-white">MAP ≥ 65 mmHg</b>。</li>
+                <li><b class="text-amber-300">目標體溫管理 (TTM)</b>：對無法遵從指令（昏迷）患者，維持 <b class="text-white">32°C – 36°C 至少 24 小時</b>（2023/2025 更新為 32–37.5°C 持續至少 36–72 小時並積極預防發燒 &gt; 37.7°C）。</li>
+                <li><b class="text-purple-300">ROSC 後心導管 (PCI) 決策</b>：12 導程有 <b class="text-white">STEMI</b> 或不穩定心因性休克 ➔ 立即緊急心導管；若無 ST 段上升 (Non-STE) 且穩定則不需常規立即心導管。</li>
+              </ul>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-amber-300 text-sm">📈 二、國考必考 EtCO2 波形圖儀四大經典圖譜（112-9, 111-15, 109-9, 109-14）</h4>
+              <ul class="space-y-2 text-slate-200 list-disc pl-5">
+                <li><b class="text-emerald-300">① 瞬間躍升超過 40 mmHg</b>：CPR 期間原本維持 10–20 mmHg，突然跳升至 &gt; 40 mmHg ➔ <b class="text-white">自發性循環恢復 (ROSC)</b> 最早期指標！</li>
+                <li><b class="text-rose-300">② 穩定 40 mmHg 突然掉到 0（直線歸零）</b>：<b class="text-white">氣管內管滑脫（脫出至食道）、管路完全脫落或呼吸器斷線</b>（處置口訣 `DOPE`）。</li>
+                <li><b class="text-amber-300">③ 高原波後方出現一連串高低起伏鋸齒小波（無法維持平台）</b>：台灣 EMTP 教材標準之 <b class="text-white">「氣管內管氣囊 (Cuff) 破損漏氣」</b> 圖形（109-14、111-15、112-9 連考三次）！</li>
+                <li><b class="text-cyan-300">④ 高原期出現單一凹陷裂口 (Curare cleft)</b>：肌肉鬆弛劑藥效退去，病患開始恢復自發性呼吸（與呼吸器對抗 Bucking）。</li>
+                <li><b class="text-purple-300">⑤ 鯊魚鰭波形 (Shark-fin)</b>：吐氣斜率變緩無水平高原 ➔ <b class="text-white">支氣管痙攣（氣喘 / COPD 急性發作）</b>。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: 急救給藥途徑與 ECPR 關鍵數字 -->
+        <div id="cheat-tab-content-5" class="cheat-tab-pane hidden space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-amber-300 text-sm">💉 一、Epinephrine 給藥途徑、濃度與氣管內管 (ET) 口訣（113-16, 110-58, 109-44）</h4>
+              <ul class="space-y-2 text-slate-200 list-disc pl-5">
+                <li><b class="text-cyan-300">心搏停止 (IV / IO)</b>：每 3–5 分鐘給予 <b class="text-white">1 mg (1:10,000，即 1 mg 稀釋至 10 mL)</b>，推注後以 20 mL N/S 沖管並抬高肢體 10–20 秒。不可電擊心律應<b class="text-emerald-300">儘速給第一劑</b>；可電擊心律於<b class="text-amber-300">第 2 次電擊後</b>給予。</li>
+                <li><b class="text-rose-300">過敏性休克 (Anaphylaxis)</b>：首選路徑為 <b class="text-white">大腿前外側肌肉注射 (IM)</b>（絕非皮下 SC），成人劑量 <b class="text-white">0.3–0.5 mg (1:1,000 原液 0.3–0.5 mL)</b>。</li>
+                <li><b class="text-purple-300">氣管內管給藥 (ET tube) 口訣 `NAVEL`</b>：<b class="text-white">N</b>aloxone、<b class="text-white">A</b>tropine、<b class="text-white">V</b>asopressin、<b class="text-white">E</b>pinephrine、<b class="text-white">L</b>idocaine。劑量需為靜脈劑量的 <b class="text-amber-300">2 – 2.5 倍</b>（如 Epinephrine 給 2–2.5 mg），並以蒸餾水或生理食鹽水稀釋至 5–10 mL。</li>
+                <li><b class="text-emerald-300">孕婦心搏停止（114-85, 109-44）</b>：IV 必須打在<b class="text-white">橫膈膜以上</b>；子宮底達肚臍以上（≥ 20 週）執行<b class="text-white">雙手向「左」推移子宮 (LUD)</b>；急救 <b class="text-rose-300">4 分鐘</b> 未 ROSC 應啟動瀕死剖腹產 (PMCD，於 5 分鐘內取出胎兒)。</li>
+              </ul>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h4 class="font-bold text-cyan-300 text-sm">🫀 二、ECPR (葉克膜輔助心肺復甦) 與 VA vs VV-ECMO（114-3, 113-22, 112-23, 111-21）</h4>
+              <ul class="space-y-2 text-slate-200 list-disc pl-5">
+                <li><b class="text-amber-300">VA-ECMO vs VV-ECMO 必考區別</b>：看第二個字母打回哪裡——<b class="text-white">V-A (靜脈引流 ➔ 動脈打回)</b> 同時支持<b class="text-emerald-300">心臟與肺臟</b>（心搏停止 ECPR 唯一選擇）；<b class="text-white">V-V (靜脈引流 ➔ 靜脈打回)</b> 僅支持<b class="text-cyan-300">肺臟氣體交換</b>！</li>
+                <li><b class="text-emerald-300">ECPR 理想收案條件（113-22, 112-23）</b>：① 年齡 &lt; 70 歲（或 18–75 歲）、② <b class="text-white">有目擊倒地且有旁觀者 CPR（No-flow time &lt; 5 分鐘）</b>、③ <b class="text-white">初始心律為可電擊心律 (VF / pVT)</b>、④ 倒地至完成 ECMO 轉流時間 (Low-flow time) 預計可於 <b class="text-white">60 分鐘內</b>達成。</li>
+                <li><b class="text-rose-300">ECMO 絕對/相對禁忌症</b>：近期（如 72 小時內）頭部外傷合併<b class="text-white">顱內出血</b>、無法控制之活動性大出血、末期不可逆疾病。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==================== 手機/平板專屬：底部懸浮快速切換列 (Mobile/Tablet Sticky Bottom Bar) ==================== -->
+  <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[#070d19]/95 backdrop-blur-md border-t border-slate-800 px-3 py-2.5 shadow-2xl">
+    <div class="max-w-xl mx-auto grid grid-cols-4 gap-2 items-center">
+      <button
+        onclick="prevQuestion()"
+        id="btn-mobile-prev"
+        class="py-2.5 px-2 rounded-xl text-xs font-bold bg-slate-800 active:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1 disabled:opacity-40"
+      >
+        <span>←</span> <span>上一題</span>
+      </button>
+      <button
+        onclick="toggleStarCurrent()"
+        id="btn-mobile-star"
+        class="py-2.5 px-2 rounded-xl text-xs font-bold bg-slate-800 active:bg-slate-700 text-amber-300 border border-slate-700 flex items-center justify-center gap-1"
+      >
+        <span id="mobile-star-icon">☆</span> <span>收藏</span>
+      </button>
+      <button
+        onclick="scrollToOrRevealAnalysis()"
+        id="btn-mobile-analysis"
+        class="py-2.5 px-2 rounded-xl text-xs font-bold bg-emerald-500/20 active:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 flex items-center justify-center gap-1"
+      >
+        <span>🧠</span> <span>看解析</span>
+      </button>
+      <button
+        onclick="nextQuestion()"
+        id="btn-mobile-next"
+        class="py-2.5 px-2 rounded-xl text-xs font-bold bg-cyan-500 active:bg-cyan-400 text-slate-950 shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1 disabled:opacity-40"
+      >
+        <span>下一題</span> <span>→</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 引入 104 題結構化題庫資料檔 (免開 Server 零 CORS 阻擋) -->
+  <script src="acls_data.js"></script>
+
+  <!-- ==================== 前端核心互動邏輯 (Application Script) ==================== -->
+  <script>
+    // ==================== 狀態管理與常數定義 ====================
+    const STORAGE_KEY = 'EMTP_ACLS_REVIEW_STATE_V1';
+    const ALL_QUESTIONS = Array.isArray(window.ACLS_QUESTIONS) ? window.ACLS_QUESTIONS : [];
+
+    const CATEGORIES = [
+      { name: '核心藥物與5H5T', icon: '💊', short: '核心藥物與5H5T' },
+      { name: 'ACS與12導程', icon: '📈', short: 'ACS與12導程' },
+      { name: '心搏停止', icon: '⚡', short: '心搏停止' },
+      { name: 'ROSC照護', icon: '🫁', short: 'ROSC照護' },
+      { name: '心搏過速', icon: '💓', short: '心搏過速' },
+      { name: '心搏過緩', icon: '🐢', short: '心搏過緩' }
+    ];
+
+    // 使用者本地進度結構
+    let userState = {
+      answers: {},   // { "114-55": { selected: "B", isCorrect: true, timestamp: 123456 } }
+      starred: {},   // { "114-55": true }
+      notes: {},     // { "114-55": "下壁 STEMI 禁用 NTG" }
+      lastQuestionId: null
+    };
+
+    // 當前篩選與瀏覽狀態
+    let filterState = {
+      category: 'all',     // 'all' or category name
+      mode: 'all',         // 'all' | 'unanswered' | 'wrong' | 'starred' | 'ecg' | 'disputed'
+      year: 'all',         // 'all' | '114' .. '108'
+      search: ''           // keyword string
+    };
+
+    let filteredQuestions = [...ALL_QUESTIONS];
+    let currentIndex = 0;
+    let showTriggerHints = false;
+    let manualRevealMap = {}; // { "114-3": true } 記錄單次瀏覽點擊「直接看解析」的題目
+    let isRadarCollapsed = false;
+
+    // ==================== 初始化與 LocalStorage 存取 ====================
+    function loadUserState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          userState.answers = parsed.answers || {};
+          userState.starred = parsed.starred || {};
+          userState.notes = parsed.notes || {};
+          userState.lastQuestionId = parsed.lastQuestionId || null;
+        }
+      } catch (e) {
+        console.warn('無法讀取 LocalStorage 狀態:', e);
+      }
+    }
+
+    function saveUserState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userState));
+      } catch (e) {
+        console.warn('無法寫入 LocalStorage 狀態:', e);
+      }
+    }
+
+    // 判斷某個選項代號 (A/B/C/D) 是否為該題正確答案
+    function isOptionCorrect(question, letter) {
+      if (Array.isArray(question.answer)) {
+        return question.answer.includes(letter);
+      }
+      return question.answer === letter;
+    }
+
+    // 格式化顯示正確答案字串
+    function formatAnswerDisplay(question) {
+      if (Array.isArray(question.answer)) {
+        return question.answer.join(' 或 ');
+      }
+      return question.answer;
+    }
+
+    // ==================== 頂部弱點雷達與篩選統計更新 ====================
+    function renderDashboardAndFilters() {
+      // 1. 計算全局數據
+      const totalCount = ALL_QUESTIONS.length;
+      const answeredIds = Object.keys(userState.answers);
+      const answeredCount = answeredIds.length;
+      const correctCount = answeredIds.filter(id => userState.answers[id]?.isCorrect).length;
+      const wrongCount = answeredIds.filter(id => userState.answers[id] && !userState.answers[id].isCorrect).length;
+      const starredCount = Object.keys(userState.starred).filter(id => userState.starred[id]).length;
+      const unansweredCount = totalCount - answeredCount;
+      const ecgCount = ALL_QUESTIONS.filter(q => Boolean(q.image)).length;
+      const disputedCount = ALL_QUESTIONS.filter(q => Boolean(q.is_disputed)).length;
+
+      // 更新頂部導覽列統計
+      document.getElementById('nav-answered-count').textContent = `${answeredCount} / ${totalCount}`;
+      const overallAcc = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : null;
+      const navAccEl = document.getElementById('nav-accuracy-rate');
+      if (overallAcc === null) {
+        navAccEl.textContent = '--%';
+        navAccEl.className = 'font-mono font-bold text-slate-400';
+      } else {
+        navAccEl.textContent = `${overallAcc}%`;
+        navAccEl.className = overallAcc < 70
+          ? 'font-mono font-bold text-rose-400'
+          : 'font-mono font-bold text-emerald-400';
+      }
+      document.getElementById('nav-star-count').textContent = starredCount;
+
+      // 更新狀態篩選器數字
+      document.getElementById('count-all').textContent = totalCount;
+      document.getElementById('count-unanswered').textContent = unansweredCount;
+      document.getElementById('count-wrong').textContent = wrongCount;
+      document.getElementById('count-starred').textContent = starredCount;
+      document.getElementById('count-ecg').textContent = ecgCount;
+      document.getElementById('count-disputed').textContent = disputedCount;
+
+      // 2. 渲染六大分類弱點雷達卡片
+      const radarGrid = document.getElementById('category-radar-grid');
+      radarGrid.innerHTML = CATEGORIES.map(cat => {
+        const catQs = ALL_QUESTIONS.filter(q => q.category === cat.name);
+        const catTotal = catQs.length;
+        const catAnswered = catQs.filter(q => userState.answers[q.id]).length;
+        const catCorrect = catQs.filter(q => userState.answers[q.id]?.isCorrect).length;
+        const acc = catAnswered > 0 ? Math.round((catCorrect / catAnswered) * 100) : null;
+        const completionPct = Math.round((catAnswered / catTotal) * 100);
+        const isSelected = filterState.category === cat.name;
+
+        // 顏色邏輯：若已作答且答對率 < 70% 顯示紅/橘色警示
+        let accBadgeClass = 'bg-slate-800 text-slate-400 border-slate-700';
+        let barColorClass = 'bg-cyan-500';
+        let cardBorderClass = isSelected
+          ? 'border-cyan-400 ring-2 ring-cyan-500/30 bg-slate-900'
+          : 'border-slate-800/90 bg-slate-900/60 hover:bg-slate-900 hover:border-slate-700';
+
+        if (acc !== null) {
+          if (acc < 60) {
+            accBadgeClass = 'bg-rose-500/20 text-rose-300 border-rose-500/40 animate-pulse';
+            barColorClass = 'bg-rose-500';
+            if (!isSelected) cardBorderClass = 'border-rose-500/40 bg-rose-950/15 hover:bg-rose-950/25';
+          } else if (acc < 70) {
+            accBadgeClass = 'bg-amber-500/20 text-amber-300 border-amber-500/40';
+            barColorClass = 'bg-amber-500';
+            if (!isSelected) cardBorderClass = 'border-amber-500/40 bg-amber-950/15 hover:bg-amber-950/25';
+          } else {
+            accBadgeClass = 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+            barColorClass = 'bg-emerald-500';
+          }
+        }
+
+        return `
+          <button
+            onclick="toggleCategoryFilter('${cat.name}')"
+            class="text-left p-3 rounded-xl border transition flex flex-col justify-between gap-2 ${cardBorderClass}"
+          >
+            <div class="flex items-start justify-between gap-1">
+              <div class="flex items-center gap-1.5">
+                <span class="text-sm">${cat.icon}</span>
+                <span class="text-xs font-bold text-slate-100 leading-tight">${cat.short}</span>
+              </div>
+              <span class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded border ${accBadgeClass}">
+                ${acc === null ? '未測' : `${acc}%`}
+              </span>
+            </div>
+            <div class="space-y-1 w-full">
+              <div class="flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <span>完成 ${catAnswered}/${catTotal}</span>
+                <span>${acc !== null && acc < 70 ? '⚠️ 需加強' : `${completionPct}%`}</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full ${barColorClass} transition-all duration-300" style="width: ${completionPct}%"></div>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      // 3. 更新狀態篩選按鈕高亮樣式
+      document.querySelectorAll('.filter-pill').forEach(btn => {
+        const mode = btn.getAttribute('data-mode');
+        if (mode === filterState.mode) {
+          btn.className = 'filter-pill px-3 py-1.5 rounded-lg text-xs font-bold transition bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20';
+        } else {
+          btn.className = 'filter-pill px-3 py-1.5 rounded-lg text-xs font-bold transition bg-slate-900 text-slate-300 border border-slate-800 hover:bg-slate-800';
+        }
+      });
+
+      // 4. 顯示或隱藏「清除篩選」按鈕
+      const hasActiveFilter =
+        filterState.category !== 'all' ||
+        filterState.mode !== 'all' ||
+        filterState.year !== 'all' ||
+        filterState.search.trim() !== '';
+      document.getElementById('reset-filter-btn').classList.toggle('hidden', !hasActiveFilter);
+    }
+
+    // ==================== 篩選邏輯與題目渲染 ====================
+    function applyFilters(preserveCurrentId = true) {
+      const currentQId = filteredQuestions[currentIndex]?.id;
+      const kw = filterState.search.trim().toLowerCase();
+
+      filteredQuestions = ALL_QUESTIONS.filter(q => {
+        // 1. 分類篩選
+        if (filterState.category !== 'all' && q.category !== filterState.category) {
+          return false;
+        }
+        // 2. 年度篩選
+        if (filterState.year !== 'all') {
+          const qYear = q.id.split('-')[0];
+          if (qYear !== filterState.year) return false;
+        }
+        // 3. 模式篩選
+        if (filterState.mode === 'unanswered' && userState.answers[q.id]) return false;
+        if (filterState.mode === 'wrong' && (!userState.answers[q.id] || userState.answers[q.id].isCorrect)) return false;
+        if (filterState.mode === 'starred' && !userState.starred[q.id]) return false;
+        if (filterState.mode === 'ecg' && !q.image) return false;
+        if (filterState.mode === 'disputed' && !q.is_disputed) return false;
+
+        // 4. 關鍵字搜尋 (比對題號、題幹、選項、key_triggers、解析)
+        if (kw) {
+          const haystack = [
+            q.id,
+            q.question,
+            ...(q.options || []),
+            ...(q.key_triggers || []),
+            ...(q.algorithm_path || []),
+            q.confusion_trap || '',
+            q.guideline_check || '',
+            userState.notes[q.id] || ''
+          ].join(' ').toLowerCase();
+          if (!haystack.includes(kw)) return false;
+        }
+        return true;
+      });
+
+      renderDashboardAndFilters();
+
+      const emptyBox = document.getElementById('empty-state-box');
+      const workspace = document.getElementById('main-workspace');
+
+      if (filteredQuestions.length === 0) {
+        emptyBox.classList.remove('hidden');
+        workspace.classList.add('hidden');
+        return;
+      }
+
+      emptyBox.classList.add('hidden');
+      workspace.classList.remove('hidden');
+
+      if (preserveCurrentId && currentQId) {
+        const foundIdx = filteredQuestions.findIndex(q => q.id === currentQId);
+        currentIndex = foundIdx >= 0 ? foundIdx : 0;
+      } else {
+        currentIndex = 0;
+      }
+
+      renderCurrentQuestion();
+    }
+
+    // 將文字中的關鍵數值、藥名或重點自動加上高對比視覺強調
+    function formatRichClinicalText(text) {
+      if (!text) return '';
+      let safe = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // 轉換 **粗體** 為琥珀/亮白色強調
+      safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong class="text-amber-300 font-bold">$1</strong>');
+      // 轉換 `code` 為青色等寬標籤
+      safe = safe.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-cyan-950/80 text-cyan-300 font-mono text-xs border border-cyan-500/30">$1</code>');
+
+      // 高亮核心急救藥名與重要臨床術語
+      const highlightTerms = [
+        'Atropine', 'Adenosine', 'Amiodarone', 'Lidocaine', 'Epinephrine', 'Dopamine',
+        'Procainamide', 'Verapamil', 'Diltiazem', 'MgSO4', 'NTG', 'Aspirin', 'Morphine',
+        'Sodium bicarbonate', 'Calcium chloride', 'Calcium gluconate', 'Naloxone',
+        'STEMI', 'NSTEMI', 'Sgarbossa', 'Mobitz type II', 'Mobitz II', 'Wenckebach',
+        'Torsades de Pointes', 'TdP', 'WPW', 'Beck\'s triad', 'Osborn wave', 'J wave',
+        'S1Q3T3', 'VA-ECMO', 'VV-ECMO', 'ECPR', 'ROSC', 'TTM', 'EtCO2', 'TCP'
+      ];
+      highlightTerms.forEach(term => {
+        const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`\\b(${escapedTerm})\\b`, 'g');
+        safe = safe.replace(regex, '<span class="text-cyan-300 font-semibold">$1</span>');
+      });
+
+      return safe;
+    }
+
+    // 渲染當前題目與右欄解析
+    function renderCurrentQuestion() {
+      const q = filteredQuestions[currentIndex];
+      if (!q) return;
+
+      userState.lastQuestionId = q.id;
+      saveUserState();
+
+      // 1. 題頭徽章
+      document.getElementById('q-index-badge').textContent = `#${currentIndex + 1} / ${filteredQuestions.length}`;
+      document.getElementById('q-id-badge').textContent = `${q.id} (${q.id.split('-')[0]}年 第${q.id.split('-')[1]}題)`;
+      document.getElementById('q-category-badge').textContent = q.category;
+      document.getElementById('q-disputed-badge').classList.toggle('hidden', !q.is_disputed);
+      document.getElementById('q-ecg-badge').classList.toggle('hidden', !q.image);
+
+      // 2. 星號與破題線索按鈕狀態
+      const isStarred = Boolean(userState.starred[q.id]);
+      const starBtn = document.getElementById('btn-toggle-star');
+      document.getElementById('star-icon').textContent = isStarred ? '⭐' : '☆';
+      document.getElementById('star-text').textContent = isStarred ? '已標記待加強' : '標記待加強';
+      starBtn.className = isStarred
+        ? 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-sm'
+        : 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800';
+
+      const trigBtn = document.getElementById('btn-toggle-triggers');
+      document.getElementById('trigger-btn-text').textContent = showTriggerHints ? '隱藏線索' : '破題線索';
+      trigBtn.className = showTriggerHints
+        ? 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition bg-cyan-500/20 text-cyan-300 border-cyan-500/50'
+        : 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800';
+
+      // 3. 破題關鍵字與題幹渲染
+      const triggerBox = document.getElementById('trigger-pills-box');
+      const triggerList = document.getElementById('trigger-pills-list');
+      let stemHtml = q.question
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      if (showTriggerHints && Array.isArray(q.key_triggers) && q.key_triggers.length > 0) {
+        triggerBox.classList.remove('hidden');
+        triggerList.innerHTML = q.key_triggers.map(t => `
+          <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-cyan-500/20 text-cyan-200 border border-cyan-500/40">
+            🔑 ${t}
+          </span>
+        `).join('');
+
+        // 嘗試在題幹中高亮匹配的短詞
+        q.key_triggers.forEach(trig => {
+          const cleanTrig = trig.split('(')[0].split('：')[0].trim();
+          if (cleanTrig.length >= 2 && stemHtml.includes(cleanTrig)) {
+            stemHtml = stemHtml.split(cleanTrig).join(`<mark class="trigger-mark">${cleanTrig}</mark>`);
+          }
+        });
+      } else {
+        triggerBox.classList.add('hidden');
+      }
+
+      document.getElementById('q-stem-text').innerHTML = stemHtml;
+
+      // 4. 心電圖 / 圖譜檢視器
+      const imgContainer = document.getElementById('q-image-container');
+      const imgEl = document.getElementById('q-ecg-image');
+      if (q.image) {
+        imgContainer.classList.remove('hidden');
+        imgEl.src = q.image;
+        imgEl.alt = `${q.id} 心電圖或生理圖譜`;
+      } else {
+        imgContainer.classList.add('hidden');
+        imgEl.src = '';
+      }
+
+      // 5. 渲染 A / B / C / D 選項
+      const ansRecord = userState.answers[q.id]; // { selected, isCorrect }
+      const isAnswered = Boolean(ansRecord);
+      const isRevealed = isAnswered || Boolean(manualRevealMap[q.id]);
+      const letters = ['A', 'B', 'C', 'D'];
+
+      const optionsContainer = document.getElementById('q-options-list');
+      optionsContainer.innerHTML = q.options.map((optText, idx) => {
+        const letter = letters[idx] || String.fromCharCode(65 + idx);
+        // 移除選項開頭重複的 "(A)" 以免雙重顯示
+        const cleanOptText = optText.replace(/^\([A-D]\)\s*/, '');
+        const isCorrectOpt = isOptionCorrect(q, letter);
+        const isSelectedOpt = ansRecord?.selected === letter;
+
+        let btnStyle = 'bg-slate-900/85 hover:bg-slate-800/90 border-slate-800 hover:border-cyan-500/40 text-slate-200';
+        let badgeStyle = 'bg-slate-800 text-slate-300 border-slate-700';
+        let statusTag = '';
+
+        if (isRevealed) {
+          if (isCorrectOpt) {
+            btnStyle = 'bg-emerald-950/40 border-emerald-500/70 text-emerald-100 shadow-md shadow-emerald-950/30';
+            badgeStyle = 'bg-emerald-500 text-slate-950 font-black border-emerald-400';
+            statusTag = `<span class="ml-auto text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">✓ 正確答案</span>`;
+          } else if (isSelectedOpt && !isCorrectOpt) {
+            btnStyle = 'bg-rose-950/40 border-rose-500/70 text-rose-100';
+            badgeStyle = 'bg-rose-500 text-white font-black border-rose-400';
+            statusTag = `<span class="ml-auto text-xs font-bold px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 shrink-0">✗ 您的選擇</span>`;
+          } else {
+            btnStyle = 'bg-slate-900/40 border-slate-800/60 text-slate-400 opacity-75';
+          }
+        }
+
+        return `
+          <button
+            onclick="selectOption('${letter}')"
+            class="w-full text-left p-3.5 sm:p-4 rounded-xl border-2 transition flex items-start gap-3 group ${btnStyle}"
+          >
+            <span class="w-7 h-7 rounded-lg border flex items-center justify-center text-xs font-mono font-bold shrink-0 mt-0.5 transition ${badgeStyle}">
+              ${letter}
+            </span>
+            <span class="text-sm sm:text-base font-medium leading-relaxed flex-1">${cleanOptText}</span>
+            ${statusTag}
+          </button>
+        `;
+      }).join('');
+
+      // 6. 作答結果橫幅
+      const bannerEl = document.getElementById('q-result-banner');
+      const resultTextEl = document.getElementById('q-result-text');
+      if (isAnswered) {
+        bannerEl.classList.remove('hidden');
+        if (ansRecord.isCorrect) {
+          bannerEl.className = 'rounded-xl p-3.5 border flex flex-wrap items-center justify-between gap-2 bg-emerald-950/40 border-emerald-500/50';
+          resultTextEl.innerHTML = `<span class="text-emerald-400 text-base">🎉 判讀精準！</span> <span class="text-slate-200">您選擇了 (${ansRecord.selected})，完全命中標準答案（${formatAnswerDisplay(q)}）。</span>`;
+        } else {
+          bannerEl.className = 'rounded-xl p-3.5 border flex flex-wrap items-center justify-between gap-2 bg-rose-950/40 border-rose-500/50';
+          resultTextEl.innerHTML = `<span class="text-rose-400 text-base">⚠️ 小心陷阱！</span> <span class="text-slate-200">您選擇了 (${ansRecord.selected})，正確答案為 <b class="text-emerald-300 font-mono">(${formatAnswerDisplay(q)})</b>。請詳閱右側防混淆解析！</span>`;
+        }
+      } else {
+        bannerEl.classList.add('hidden');
+      }
+
+      // 7. 個人筆記
+      document.getElementById('q-user-note').value = userState.notes[q.id] || '';
+
+      // 8. 上下題按鈕啟用狀態（同步桌機與手機底部懸浮列）
+      const atFirst = currentIndex <= 0;
+      const atLast = currentIndex >= filteredQuestions.length - 1;
+      document.getElementById('btn-prev-q').disabled = atFirst;
+      document.getElementById('btn-next-q').disabled = atLast;
+      document.getElementById('btn-reveal-analysis').classList.toggle('hidden', isRevealed);
+      const mobPrev = document.getElementById('btn-mobile-prev');
+      const mobNext = document.getElementById('btn-mobile-next');
+      const mobStarIcon = document.getElementById('mobile-star-icon');
+      if (mobPrev) mobPrev.disabled = atFirst;
+      if (mobNext) mobNext.disabled = atLast;
+      if (mobStarIcon) mobStarIcon.textContent = isStarred ? '⭐' : '☆';
+
+      // 9. 右欄：演算法決策路徑與深度解析面板
+      const lockedCard = document.getElementById('analysis-locked-card');
+      const unlockedBox = document.getElementById('analysis-unlocked-container');
+
+      if (!isRevealed) {
+        lockedCard.classList.remove('hidden');
+        unlockedBox.classList.add('hidden');
+      } else {
+        lockedCard.classList.add('hidden');
+        unlockedBox.classList.remove('hidden');
+
+        // ① 渲染演算法決策路徑節點圖
+        const flowBox = document.getElementById('algorithm-flowchart-box');
+        const pathSteps = Array.isArray(q.algorithm_path) ? q.algorithm_path : [];
+        flowBox.innerHTML = pathSteps.map((step, i) => {
+          const isLast = i === pathSteps.length - 1;
+          const nodeColor = isLast
+            ? 'bg-emerald-950/70 border-emerald-400/70 text-emerald-100 font-bold shadow-md shadow-emerald-950/40'
+            : 'bg-slate-900/90 border-slate-700/90 text-slate-200';
+          const badgeColor = isLast
+            ? 'bg-emerald-400 text-slate-950'
+            : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40';
+
+          return `
+            <div class="flex flex-col items-stretch">
+              <div class="rounded-xl p-3 border ${nodeColor} flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed">
+                <span class="w-5 h-5 rounded-md ${badgeColor} flex items-center justify-center text-[11px] font-mono font-bold shrink-0 mt-0.5">
+                  ${i + 1}
+                </span>
+                <div class="flex-1">${formatRichClinicalText(step)}</div>
+              </div>
+              ${!isLast ? `
+                <div class="flex items-center justify-center py-0.5">
+                  <div class="w-0.5 h-3.5 bg-gradient-to-b from-cyan-400 to-emerald-400"></div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+
+        // ② 渲染易混淆陷阱拆解卡與爭議題警示
+        const disputedAlert = document.getElementById('disputed-detail-alert');
+        if (q.is_disputed) {
+          disputedAlert.classList.remove('hidden');
+          document.getElementById('disputed-official-ans').textContent = `官方公告答案：${q.official_answer || formatAnswerDisplay(q)}`;
+        } else {
+          disputedAlert.classList.add('hidden');
+        }
+
+        const trapLines = (q.confusion_trap || '')
+          .split('\n')
+          .map(line => line.replace(/^•\s*/, '').trim())
+          .filter(Boolean);
+
+        document.getElementById('confusion-trap-list').innerHTML = trapLines.map(line => `
+          <li class="flex items-start gap-2 bg-amber-950/20 border border-amber-500/20 rounded-xl p-3">
+            <span class="text-amber-400 font-bold mt-0.5 shrink-0">▸</span>
+            <span class="flex-1">${formatRichClinicalText(line)}</span>
+          </li>
+        `).join('');
+
+        // ③ 渲染最新指引檢核卡
+        const guideLines = (q.guideline_check || '')
+          .split('\n')
+          .map(line => line.replace(/^•\s*/, '').trim())
+          .filter(Boolean);
+
+        document.getElementById('guideline-check-list').innerHTML = guideLines.map(line => `
+          <li class="flex items-start gap-2 bg-cyan-950/20 border border-cyan-500/20 rounded-xl p-3">
+            <span class="text-cyan-400 font-bold mt-0.5 shrink-0">✔</span>
+            <span class="flex-1">${formatRichClinicalText(line)}</span>
+          </li>
+        `).join('');
+      }
+    }
+
+    // ==================== 使用者互動事件處理 ====================
+    function selectOption(letter) {
+      const q = filteredQuestions[currentIndex];
+      if (!q) return;
+
+      const correct = isOptionCorrect(q, letter);
+      userState.answers[q.id] = {
+        selected: letter,
+        isCorrect: correct,
+        timestamp: Date.now()
+      };
+      saveUserState();
+      renderDashboardAndFilters();
+      renderCurrentQuestion();
+    }
+
+    function clearCurrentAnswer() {
+      const q = filteredQuestions[currentIndex];
+      if (!q) return;
+      delete userState.answers[q.id];
+      delete manualRevealMap[q.id];
+      saveUserState();
+      renderDashboardAndFilters();
+      renderCurrentQuestion();
+    }
+
+    function revealAnalysisManually() {
+      const q = filteredQuestions[currentIndex];
+      if (!q) return;
+      manualRevealMap[q.id] = true;
+      renderCurrentQuestion();
+    }
+
+    function toggleStarCurrent() {
+      const q = filteredQuestions[currentIndex];
+      if (!q) return;
+      if (userState.starred[q.id]) {
+        delete userState.starred[q.id];
+      } else {
+        userState.starred[q.id] = true;
+      }
+      saveUserState();
+      renderDashboardAndFilters();
+      renderCurrentQuestion();
+    }
+
+    function toggleTriggerHints() {
+      showTriggerHints = !showTriggerHints;
+      renderCurrentQuestion();
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderCurrentQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function nextQuestion() {
+      if (currentIndex < filteredQuestions.length - 1) {
+        currentIndex++;
+        renderCurrentQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    let noteSaveTimer = null;
+    function handleNoteInput(val) {
+      const q = filteredQuestions[currentIndex];
+      if (!q) return;
+      if (val.trim()) {
+        userState.notes[q.id] = val;
+      } else {
+        delete userState.notes[q.id];
+      }
+      saveUserState();
+
+      const indicator = document.getElementById('note-save-indicator');
+      indicator.classList.remove('opacity-0');
+      clearTimeout(noteSaveTimer);
+      noteSaveTimer = setTimeout(() => {
+        indicator.classList.add('opacity-0');
+      }, 1500);
+    }
+
+    // ==================== 篩選器切換函式 ====================
+    function toggleCategoryFilter(catName) {
+      filterState.category = filterState.category === catName ? 'all' : catName;
+      applyFilters(false);
+    }
+
+    function setFilterMode(mode) {
+      filterState.mode = mode;
+      applyFilters(false);
+    }
+
+    function setYearFilter(yr) {
+      filterState.year = yr;
+      applyFilters(false);
+    }
+
+    function handleSearchInput(val) {
+      filterState.search = val;
+      document.getElementById('clear-search-btn').classList.toggle('hidden', !val);
+      applyFilters(false);
+    }
+
+    function clearSearchInput() {
+      document.getElementById('search-input').value = '';
+      filterState.search = '';
+      document.getElementById('clear-search-btn').classList.add('hidden');
+      applyFilters(false);
+    }
+
+    function resetFilters() {
+      filterState = {
+        category: 'all',
+        mode: 'all',
+        year: 'all',
+        search: ''
+      };
+      document.getElementById('year-select').value = 'all';
+      document.getElementById('search-input').value = '';
+      document.getElementById('clear-search-btn').classList.add('hidden');
+      applyFilters(true);
+    }
+
+    function toggleRadarCollapse() {
+      isRadarCollapsed = !isRadarCollapsed;
+      document.getElementById('category-radar-grid').classList.toggle('hidden', isRadarCollapsed);
+      document.getElementById('radar-collapse-text').textContent = isRadarCollapsed ? '展開雷達' : '收合雷達';
+    }
+
+    // ==================== 彈窗控制 (Lightbox / CheatSheet / Matrix / 進度管理) ====================
+    function openLightbox() {
+      const q = filteredQuestions[currentIndex];
+      if (!q || !q.image) return;
+      document.getElementById('lightbox-img').src = q.image;
+      document.getElementById('lightbox-title').textContent = `${q.id} 心電圖 / 生理波形高畫質檢視`;
+      document.getElementById('lightbox-modal').classList.remove('hidden');
+    }
+
+
+    let isLightboxZoomed = false;
+    function toggleLightboxZoom() {
+      const img = document.getElementById('lightbox-img');
+      const btn = document.getElementById('btn-lightbox-zoom');
+      const scrollArea = document.getElementById('lightbox-scroll-area');
+      isLightboxZoomed = !isLightboxZoomed;
+      if (isLightboxZoomed) {
+        img.className = 'w-[180vw] sm:w-[150vw] max-w-none max-h-none object-contain bg-white p-2 sm:p-3 rounded-2xl shadow-2xl border-2 border-cyan-500/40 cursor-zoom-out transition-all duration-200';
+        scrollArea.classList.remove('items-center', 'justify-center');
+        scrollArea.classList.add('items-start', 'justify-start');
+        if (btn) btn.textContent = '🔍 恢復 100% 適應大小';
+      } else {
+        img.className = 'max-w-full max-h-[85vh] object-contain bg-white p-2 sm:p-3 rounded-2xl shadow-2xl border-2 border-cyan-500/40 cursor-zoom-in transition-all duration-200';
+        scrollArea.classList.add('items-center', 'justify-center');
+        scrollArea.classList.remove('items-start', 'justify-start');
+        if (btn) btn.textContent = '🔍 切換 200% 放大';
+      }
+    }
+
+    function scrollToOrRevealAnalysis() {
+      const q = filteredQuestions[currentIndex];
+      if (!q) return;
+      manualRevealMap[q.id] = true;
+      renderCurrentQuestion();
+      setTimeout(() => {
+        const unlockedEl = document.getElementById('analysis-unlocked-container');
+        if (unlockedEl) {
+          unlockedEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 60);
+    }
+
+    function closeLightbox() {
+      if (isLightboxZoomed) toggleLightboxZoom();
+      document.getElementById('lightbox-modal').classList.add('hidden');
+    }
+
+    function openCheatSheetModal() {
+      document.getElementById('cheatsheet-modal').classList.remove('hidden');
+      switchCheatTab(1);
+    }
+
+    function closeCheatSheetModal() {
+      document.getElementById('cheatsheet-modal').classList.add('hidden');
+    }
+
+    function switchCheatTab(tabIdx) {
+      for (let i = 1; i <= 5; i++) {
+        const btn = document.getElementById(`cheat-tab-btn-${i}`);
+        const pane = document.getElementById(`cheat-tab-content-${i}`);
+        if (i === tabIdx) {
+          btn.className = 'cheat-tab-btn px-3.5 py-2 rounded-t-xl text-xs sm:text-sm font-bold transition bg-[#0b1323] text-amber-300 border-t border-x border-amber-500/40';
+          pane.classList.remove('hidden');
+        } else {
+          btn.className = 'cheat-tab-btn px-3.5 py-2 rounded-t-xl text-xs sm:text-sm font-bold transition bg-slate-900/50 text-slate-400 hover:text-slate-200';
+          pane.classList.add('hidden');
+        }
+      }
+    }
+
+    function openQuestionMatrixModal() {
+      const container = document.getElementById('matrix-grid-container');
+      container.innerHTML = filteredQuestions.map((q, idx) => {
+        const ans = userState.answers[q.id];
+        const starred = userState.starred[q.id];
+        const isCurrent = idx === currentIndex;
+
+        let colorCls = 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-600';
+        if (ans) {
+          colorCls = ans.isCorrect
+            ? 'bg-emerald-950/60 text-emerald-300 border-emerald-500/50'
+            : 'bg-rose-950/60 text-rose-300 border-rose-500/50';
+        }
+        if (starred) {
+          colorCls += ' ring-2 ring-amber-400/70';
+        }
+        if (isCurrent) {
+          colorCls += ' ring-2 ring-cyan-400';
+        }
+
+        return `
+          <button
+            onclick="jumpToQuestionIndex(${idx})"
+            class="p-2.5 rounded-xl border text-xs font-mono font-bold transition flex flex-col items-center justify-center gap-0.5 ${colorCls}"
+          >
+            <div class="flex items-center gap-1">
+              <span>${q.id}</span>
+              ${starred ? '<span>⭐</span>' : ''}
+            </div>
+            <span class="text-[10px] font-sans font-normal text-slate-400 truncate max-w-full">${q.category}</span>
+          </button>
+        `;
+      }).join('');
+      document.getElementById('matrix-modal').classList.remove('hidden');
+    }
+
+    function closeQuestionMatrixModal() {
+      document.getElementById('matrix-modal').classList.add('hidden');
+    }
+
+    function jumpToQuestionIndex(idx) {
+      currentIndex = idx;
+      closeQuestionMatrixModal();
+      renderCurrentQuestion();
+    }
+
+    function toggleDataMenu() {
+      document.getElementById('data-menu-dropdown').classList.toggle('hidden');
+    }
+
+    function exportProgressJSON() {
+      toggleDataMenu();
+      const dataStr = JSON.stringify(userState, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const dateStr = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `emtp_acls_progress_${dateStr}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importProgressJSON(event) {
+      toggleDataMenu();
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported && typeof imported === 'object') {
+            userState.answers = imported.answers || {};
+            userState.starred = imported.starred || {};
+            userState.notes = imported.notes || {};
+            saveUserState();
+            renderDashboardAndFilters();
+            renderCurrentQuestion();
+            alert('成功匯入學習進度！');
+          }
+        } catch (err) {
+          alert('匯入失敗：JSON 檔案格式不正確。');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetAllProgress() {
+      toggleDataMenu();
+      if (confirm('確定要清除所有作答紀錄与星號標記嗎？（個人筆記將會保留，若需連同筆記清除請再次確認）')) {
+        const clearNotes = confirm('是否同時清除所有「個人筆記」？（按「取消」可保留個人筆記，僅重置對錯與星號）');
+        userState.answers = {};
+        userState.starred = {};
+        if (clearNotes) {
+          userState.notes = {};
+        }
+        manualRevealMap = {};
+        saveUserState();
+        applyFilters(true);
+      }
+    }
+
+    // ==================== 全域鍵盤快捷鍵支援 ====================
+    window.addEventListener('keydown', e => {
+      // 若正在輸入搜尋框或筆記框，不觸發快捷鍵
+      const activeTag = document.activeElement?.tagName;
+      if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') {
+        if (e.key === 'Escape') {
+          document.activeElement.blur();
+        }
+        return;
+      }
+
+      if (e.key === 'Escape') {
+        closeLightbox();
+        closeCheatSheetModal();
+        closeQuestionMatrixModal();
+        document.getElementById('data-menu-dropdown').classList.add('hidden');
+        return;
+      }
+
+      // 彈窗開啟時不觸發刷題快捷鍵
+      const isModalOpen =
+        !document.getElementById('lightbox-modal').classList.contains('hidden') ||
+        !document.getElementById('cheatsheet-modal').classList.contains('hidden') ||
+        !document.getElementById('matrix-modal').classList.contains('hidden');
+      if (isModalOpen) return;
+
+      const key = e.key.toUpperCase();
+      if (key === '1' || key === 'A') selectOption('A');
+      else if (key === '2' || key === 'B') selectOption('B');
+      else if (key === '3' || key === 'C') selectOption('C');
+      else if (key === '4' || key === 'D') selectOption('D');
+      else if (e.key === 'ArrowLeft') prevQuestion();
+      else if (e.key === 'ArrowRight') nextQuestion();
+      else if (key === 'S') toggleStarCurrent();
+      else if (key === 'H') toggleTriggerHints();
+    });
+
+    // 點擊頁面其他地方時關閉進度管理下拉選單
+    window.addEventListener('click', e => {
+      const dropdown = document.getElementById('data-menu-dropdown');
+      if (!dropdown.classList.contains('hidden') && !e.target.closest('.relative')) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    // ==================== 啟動應用程式 ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      loadUserState();
+      renderDashboardAndFilters();
+      // 若有上次停留的題號，自動定位至該題
+      if (userState.lastQuestionId) {
+        const lastIdx = filteredQuestions.findIndex(q => q.id === userState.lastQuestionId);
+        if (lastIdx >= 0) currentIndex = lastIdx;
+      }
+      renderCurrentQuestion();
+    });
+  </script>
+</body>
+</html>
