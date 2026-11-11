@@ -162,6 +162,14 @@
           <span>題號總覽</span>
         </button>
 
+        <!-- 📱 分享 APP (QR Code) 按鈕 -->
+        <button onclick="openShareQrModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold text-xs sm:text-sm bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 shadow-sm transition transform active:scale-95" title="顯示網址 QR Code 分享給朋友">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h6v6H3V3zm12 0h6v6h-6V3zM3 15h6v6H3v-6zm13 0h2v2h-2v-2zm4 0h1v2h-1v-2zm-4 4h2v2h-2v-2zm3 1h2v1h-2v-1zm-3-3h1v1h-1v-1zm2 0h2v1h-2v-1z" />
+          </svg>
+          <span>分享 QR</span>
+        </button>
+
         <!-- 進度備份/重置選單按鈕 -->
         <div class="relative">
           <button onclick="toggleDataMenu()" class="flex items-center gap-1 px-2.5 py-2 rounded-xl text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition" title="學習進度匯出/匯入與重置">
@@ -573,7 +581,120 @@
       </aside>
 
     </div>
+
+    <!-- ==================== 底部戰友分享卡 (Footer Share & QR Code Banner) ==================== -->
+    <footer class="mt-6 bg-gradient-to-r from-[#0b1323] via-[#0f1b31] to-[#0b1323] border border-cyan-500/25 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-4 text-center sm:text-left flex-col sm:flex-row">
+        <button
+          onclick="openShareQrModal()"
+          class="group relative w-20 h-20 rounded-xl bg-white p-1.5 shadow-lg border-2 border-cyan-400/60 shrink-0 hover:scale-105 transition cursor-pointer"
+          title="點擊放大 QR Code"
+        >
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAAJYAQMAAACEqAqfAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAC1UlEQVR4nO3cTW6zMBCAYUdZZOkjcJQcDY6Wo3AEllmguvIPM2ND++mTSGWkdzYpNvO4K2zGTpwjCIK4bIQ2ptw6yx3P8JZ7F3eLXfddFhYWFhbWRyzNcu4RLR+7hvAVG+4ygs8Jm/UyWR4LCwsL6xLWTRIeZu6oskYzT5TWbRgsLCwsrD+0fL5Kz3sX1/cplnp9j4WFhYV1ecuZKs8ar7R1yTwWFhYW1p9ZGv+qwXhpfZksLCwsLKwrWE1Ya4hzR9pjHdv1fRNYWFhYWJ1bP8etTCtquVzqmX/LwsLCwsI6z6of9Q9zpSv51LrICCHPAmsc4W2qPFhYWFhYnVtfspGqK/lg1vdBLB+qmLJh6zlYWFhYWGdaszzDR5O1O4Xu60LLM2+/VoGFhYWF1b31Mk0lq7GcvAvM0rBb32NhYWFh9WxpbPUcOVPjyrvClF8TFlfFmO/VsbCwsLCwzrRiVopV+pe6tVhOnvdNq136Y2FhYWF1bunXlKbc1Zxzl2iq+uFg7sDCwsLCOsmyNZhUUqlrMC5mvaUcX6xt8CkLR/UcLCwsLKwurWaPtWTpucep3WN1efBwMHdgYWFhYZ1maVbIz/sUWnMvlfjFPNn1XeARrW0YLCwsLKyerTl+PKUrVDX3KmL7Ns/oMPI3FhYWFlbn1k3u1srNXGeN2x06z6wi7Oo5WFhYWFinWa70T4eVm2dGyvpexw0yQYR6fY+FhYWF1aF1EF7unWurdOngGlhYWFhYH7BCG9M+4V2Y+JFOx99ztQUn9J7CwsLCwerZmvcjr+xSDgPbc4yKnIcsLQRVYWFhYWH1bW41G6zkx9t9rig37ek59pgYLCwsL69OWq0JPx5Rhmp3Xo/1aLCwsLKwrWGURP4QgXd5kVTMKFhYWFtYnLQ193g8ZvMtPB5SsNG76PZi1/KAAFhYWFtY1rCZ+Wt8H0/pf+7VYWFhYWD1YBEEQl4xvVFVVm/M/H7gAAAAASUVORK5CYII="
+            alt="APP 網址 QR Code"
+            class="w-full h-full object-contain"
+          />
+          <span class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 rounded-lg flex items-center justify-center text-[11px] font-bold text-cyan-300 transition">
+            🔍 放大
+          </span>
+        </button>
+        <div class="space-y-1">
+          <div class="flex items-center justify-center sm:justify-start gap-2">
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              📱 隨身刷題分享
+            </span>
+            <h3 class="text-sm sm:text-base font-black text-white">
+              把 EMT-P ACLS 戰情室分享給同梯戰友！
+            </h3>
+          </div>
+          <p class="text-xs text-slate-400">
+            手機直接掃描左側 QR Code，或點擊右側按鈕放大／複製網址：
+            <a href="https://snake3210.github.io/emtp-acls-review-system/" target="_blank" rel="noopener" class="text-cyan-300 hover:underline font-mono">
+              https://snake3210.github.io/emtp-acls-review-system/
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-2 shrink-0">
+        <button
+          onclick="copyAppUrl('footer-copy-btn')"
+          id="footer-copy-btn"
+          class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5"
+        >
+          <span>📋</span> <span>複製網址</span>
+        </button>
+        <button
+          onclick="openShareQrModal()"
+          class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-md shadow-cyan-500/20 transition flex items-center gap-1.5"
+        >
+          <span>📱</span> <span>放大 QR Code 掃碼</span>
+        </button>
+      </div>
+    </footer>
   </main>
+
+  <!-- ==================== 📱 分享 APP 與大尺寸 QR Code 彈窗 (Share QR Modal) ==================== -->
+  <div id="share-qr-modal" onclick="closeShareQrModal()" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="bg-[#0b1323] border border-cyan-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 text-center relative">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2 text-left">
+          <span class="w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 text-base">
+            📱
+          </span>
+          <div>
+            <h3 class="text-base font-black text-white">掃描 QR Code 分享戰情室</h3>
+            <p class="text-[11px] text-slate-400">支援手機、平板與電腦瀏覽器直接開啟刷題</p>
+          </div>
+        </div>
+        <button onclick="closeShareQrModal()" class="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white text-xs font-bold transition">
+          ✕ 關閉
+        </button>
+      </div>
+
+      <!-- 大尺寸高對比 QR Code -->
+      <div class="bg-white p-4 rounded-2xl shadow-2xl border-4 border-cyan-500/40 w-64 h-64 mx-auto flex items-center justify-center">
+        <img
+          id="modal-qr-img"
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAAJYAQMAAACEqAqfAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAC1UlEQVR4nO3cTW6zMBCAYUdZZOkjcJQcDY6Wo3AEllmguvIPM2ND++mTSGWkdzYpNvO4K2zGTpwjCIK4bIQ2ptw6yx3P8JZ7F3eLXfddFhYWFhbWRyzNcu4RLR+7hvAVG+4ygs8Jm/UyWR4LCwsL6xLWTRIeZu6oskYzT5TWbRgsLCwsrD+0fL5Kz3sX1/cplnp9j4WFhYV1ecuZKs8ar7R1yTwWFhYW1p9ZGv+qwXhpfZksLCwsLKwrWE1Ya4hzR9pjHdv1fRNYWFhYWJ1bP8etTCtquVzqmX/LwsLCwsI6z6of9Q9zpSv51LrICCHPAmsc4W2qPFhYWFhYnVtfspGqK/lg1vdBLB+qmLJh6zlYWFhYWGdaszzDR5O1O4Xu60LLM2+/VoGFhYWF1b31Mk0lq7GcvAvM0rBb32NhYWFh9WxpbPUcOVPjyrvClF8TFlfFmO/VsbCwsLCwzrRiVopV+pe6tVhOnvdNq136Y2FhYWF1bunXlKbc1Zxzl2iq+uFg7sDCwsLCOsmyNZhUUqlrMC5mvaUcX6xt8CkLR/UcLCwsLKwurWaPtWTpucep3WN1efBwMHdgYWFhYZ1maVbIz/sUWnMvlfjFPNn1XeARrW0YLCwsLKyerTl+PKUrVDX3KmL7Ns/oMPI3FhYWFlbn1k3u1srNXGeN2x06z6wi7Oo5WFhYWFinWa70T4eVm2dGyvpexw0yQYR6fY+FhYWF1aF1EF7unWurdOngGlhYWFhYH7BCG9M+4V2Y+JFOx99ztQUn9J7CwsLCwerZmvcjr+xSDgPbc4yKnIcsLQRVYWFhYWH1bW41G6zkx9t9rig37ek59pgYLCwsL69OWq0JPx5Rhmp3Xo/1aLCwsLKwrWGURP4QgXd5kVTMKFhYWFtYnLQ193g8ZvMtPB5SsNG76PZi1/KAAFhYWFtY1rCZ+Wt8H0/pf+7VYWFhYWD1YBEEQl4xvVFVVm/M/H7gAAAAASUVORK5CYII="
+          alt="EMT-P ACLS 複習系統 QR Code"
+          class="w-full h-full object-contain"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <div class="text-xs font-bold text-cyan-300">🌐 線上刷題網址（GitHub Pages）</div>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-mono text-slate-200 select-all break-all">
+          https://snake3210.github.io/emtp-acls-review-system/
+        </div>
+      </div>
+
+      <!-- 操作按鈕組 -->
+      <div class="grid grid-cols-2 gap-2.5 pt-1">
+        <button
+          onclick="copyAppUrl('modal-copy-btn')"
+          id="modal-copy-btn"
+          class="py-2.5 px-3 rounded-xl text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-md shadow-cyan-500/20 transition flex items-center justify-center gap-1.5"
+        >
+          <span>📋</span> <span>複製網址</span>
+        </button>
+        <button
+          onclick="downloadQrCodeImage()"
+          class="py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center justify-center gap-1.5"
+        >
+          <span>💾</span> <span>下載 QR 圖檔</span>
+        </button>
+      </div>
+      <button
+        onclick="shareAppNative()"
+        id="btn-native-share"
+        class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition flex items-center justify-center gap-1.5"
+      >
+        <span>📲</span> <span>透過手機／系統選單直接分享給好友</span>
+      </button>
+    </div>
+  </div>
 
   <!-- ==================== 全螢幕心電圖放大檢視器 (Lightbox Modal) ==================== -->
   <div id="lightbox-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-4">
@@ -1703,6 +1824,58 @@
       document.getElementById('matrix-modal').classList.add('hidden');
     }
 
+    // ==================== 📱 QR Code 分享彈窗與網址複製/下載 ====================
+    const APP_SHARE_URL = 'https://snake3210.github.io/emtp-acls-review-system/';
+
+    function openShareQrModal() {
+      document.getElementById('share-qr-modal').classList.remove('hidden');
+    }
+
+    function closeShareQrModal() {
+      document.getElementById('share-qr-modal').classList.add('hidden');
+    }
+
+    function copyAppUrl(btnId) {
+      const btn = document.getElementById(btnId);
+      const originalHtml = btn ? btn.innerHTML : '';
+      const showCopied = () => {
+        if (!btn) return;
+        btn.innerHTML = '<span>✅</span> <span>已複製網址！</span>';
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(APP_SHARE_URL).then(showCopied).catch(() => {
+          prompt('請複製以下網址分享給朋友：', APP_SHARE_URL);
+        });
+      } else {
+        prompt('請複製以下網址分享給朋友：', APP_SHARE_URL);
+      }
+    }
+
+    function downloadQrCodeImage() {
+      const qrImg = document.getElementById('modal-qr-img');
+      if (!qrImg) return;
+      const a = document.createElement('a');
+      a.href = qrImg.src;
+      a.download = 'EMTP_ACLS_戰情室_QRCode.png';
+      a.click();
+    }
+
+    function shareAppNative() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'EMT-P 最終筆試（ACLS 專項）視覺化戰情複習系統',
+          text: '台灣急診醫學會 108–114 歷屆 EMT-P 筆試 ACLS 104 題深度解析與 23 張心電圖戰情室：',
+          url: APP_SHARE_URL
+        }).catch(() => {});
+      } else {
+        copyAppUrl('modal-copy-btn');
+      }
+    }
+
     function jumpToQuestionIndex(idx) {
       currentIndex = idx;
       closeQuestionMatrixModal();
@@ -1780,6 +1953,7 @@
         closeLightbox();
         closeCheatSheetModal();
         closeQuestionMatrixModal();
+        closeShareQrModal();
         document.getElementById('data-menu-dropdown').classList.add('hidden');
         return;
       }
@@ -1788,7 +1962,8 @@
       const isModalOpen =
         !document.getElementById('lightbox-modal').classList.contains('hidden') ||
         !document.getElementById('cheatsheet-modal').classList.contains('hidden') ||
-        !document.getElementById('matrix-modal').classList.contains('hidden');
+        !document.getElementById('matrix-modal').classList.contains('hidden') ||
+        !document.getElementById('share-qr-modal').classList.contains('hidden');
       if (isModalOpen) return;
 
       const key = e.key.toUpperCase();
